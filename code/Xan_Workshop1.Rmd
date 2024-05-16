@@ -29,9 +29,17 @@ Pivoted <- Fish_tot %>%
 ```
 
 
-```{r}
-ggplot(Pivoted, aes(x=year, y=Millions, fill= year)) +
-  geom_bar(stat='identity',show.legend=FALSE)+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```{r fig.width=80/25.4,fig.height=50/25.4}
+NewPlot <- 
+ggplot(Pivoted, aes(x=year, y=Millions)) +
+  geom_bar(stat='identity',show.legend=FALSE,fill="forestgreen",color="black")+
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))+
+  theme(axis.text = element_text(size=5), axis.title = element_text(size=8))
+NewPlot
   
+```
+
+```{r}
+ggsave(filename = "../output/Newplot.jpg",plot = NewPlot,width = 8, height = 5,units = "cm")
 ```
