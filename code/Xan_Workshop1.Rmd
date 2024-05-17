@@ -212,8 +212,8 @@ Pivoted <- Fish_tot %>%
 
 ```{r fig.width=80/25.4,fig.height=50/25.4}
 NewPlot <- 
-ggplot(Pivoted, aes(x=year, y=Millions)) +
-  geom_bar(stat='identity',show.legend=FALSE,fill="forestgreen",color="black")+
+ggplot(Pivoted, aes(x=year, y=Millions,group=1)) +
+  geom_smooth(stat='identity',show.legend=FALSE,fill="forestgreen",color="black")+
   theme_minimal()+
   theme(axis.text.x = element_text(angle = 90, hjust = 1))+
   theme(axis.text = element_text(size=5), axis.title = element_text(size=8))
@@ -221,8 +221,31 @@ NewPlot
   
 ```
 
+
+#Mutating the original plot to make it in billions
 ```{r}
-ggsave(filename = "../output/Newplot.jpg",plot = NewPlot,width = 8, height = 5,units = "cm")
+Final_Data <- Pivoted %>%
+  mutate(
+    Billions = Millions/1000,)
+Final_Data
+```
+#Plotting the new mutated data to make the line graph in Billions
+``````{r fig.width=80/25.4,fig.height=50/25.4}
+Final_Plot <- 
+ggplot(Final_Data, aes(x=year, y=Billions,group=1)) +
+  geom_smooth(stat='identity',show.legend=FALSE,color="forestgreen")+
+  theme_minimal()+
+  scale_y_continuous("Value of Fishery Imports (bn$)") +
+  scale_x_discrete("Year") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1),
+        axis.text = element_text(size=5), 
+        axis.title = element_text(size=8))
+Final_Plot
+```
+#Saving the NEW plot
+
+```{r}
+ggsave(filename = "../output/Newplot.jpg",plot = Final_Plot,width = 8, height = 5,units = "cm")
 ```
 
 #Done :)
