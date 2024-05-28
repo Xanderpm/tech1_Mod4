@@ -2,7 +2,10 @@
 title: "Workshop 1"
 author: "Xander Maness"
 date: "2024-05-16"
-output: html_document
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -17,23 +20,30 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 ##This part is for the baby steps leading up to making adjusting a graph
 
 #this is code
-
+```{r}
+getwd()
+```
 #install.packages("usethis")
 ```{r}
-credentials::git_credential_ask()
-usethis::git_sitrep()
+#I put these in "#" because they only work in interactive sessions and I did not feel like loading in everything before hand. When it is time to run it just remove the "#" and you should set it up no problem. 
+
+#credentials::git_credential_ask()
+#usethis::git_sitrep()
 
 # Creating github token
-usethis::create_github_token()
+#usethis::create_github_token()
 
 # Entering token as credential 
-gitcreds::gitcreds_set()
+#gitcreds::gitcreds_set()
 ```
 
 #Starting workshop 1
 
 ```{r}
-install.packages("tidyverse")
+##Had to put a "#" infront of the install packages command simply because it does not have a CRAN set up within this session. I hope people reading this know how to install and load a package.
+
+install.packages("tidyverse",repos = "http://cran.us.r-project.org")
+#install.packages("tidyverse")
 library(tidyverse)
 #mpg #opening the dataset
 
@@ -50,7 +60,7 @@ ggplot(data = mpg) + #make sure you do "data =" bc otherwise it makes an empty p
 
 #separating one plot multiple smaller plots
 ```{r}
-facet_wrap()
+#facet_wrap()
 
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy,color = class)) +
@@ -196,10 +206,26 @@ ggplot(data = mpg) +
 #Had to pivot the data, used help from next workshop
 
 ``` {r}
-Fish_tot <- AustFishAquacStats_2022_Tables_v1_0_0
+#Could not get this to work: Fish_tot <- read.csv(file.choose(),header = T)
+
+##Would use this if I already had the data loaded... Had to import manually and then run this. Not sure how to automatically code the importing of the data into a markdown file...
+
+#Maybe this: 
+#library(readxl)
+#AustFishAquacStats_2022_Tables_v1_0_0 <- read_excel("data/AustFishAquacStats_2022_Tables_v1.0.0.xlsx", 
+    #sheet = "Sheet1")
+#View(AustFishAquacStats_2022_Tables_v1_0_0)
+
+#Fish_tot <- AustFishAquacStats_2022_Tables_v1_0_0
+#Fish_tot
+
+#This all worked on my computer when I manually imported the dataset and it provided me with that code ^. But once I run the code it says that the path does not exist... Why?
 ```
 
 ```{r}
+library(readxl)
+Fish_tot <- AustFishAquacStats_2022_Tables_v1_0_0 <- read_excel(file.choose(),sheet = "Sheet1")
+
 Pivoted <- Fish_tot %>%
   pivot_longer(
   cols = `1989–90`:`2021–22`,
@@ -230,7 +256,7 @@ Final_Data <- Pivoted %>%
 Final_Data
 ```
 #Plotting the new mutated data to make the line graph in Billions
-``````{r fig.width=80/25.4,fig.height=50/25.4}
+```{r fig.width=80/25.4,fig.height=50/25.4}
 Final_Plot <- 
 ggplot(Final_Data, aes(x=year, y=Billions,group=1)) +
   geom_smooth(stat='identity',show.legend=FALSE,color="forestgreen")+
